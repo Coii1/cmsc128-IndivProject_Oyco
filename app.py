@@ -1,65 +1,117 @@
-from flask import Flask, render_template, url_for, request, redirect
-from flask_sqlalchemy  import SQLAlchemy
+from flask import Flask, request, jsonify, render_template
+from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from datetime import datetime
 
-app = Flask(__name__)                                            #reference file
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ToDo.db'      #set connection to database
-db = SQLAlchemy(app)                                             #This creates the SQLAlchemy object that connects Flask ↔ your database
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'  # Change to your DB
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+CORS(app)  # Enable CORS for frontend communication
 
-class ToDo(db.Model):                                           
+# Your Task Model
+class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
+    name = db.Column(db.String(200), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    completed = db.Column(db.Boolean, default=False)
+    dueDate = db.Column(db.Date)
+    due_time = db.Column(db.Time)
     
-    def __repr__(self):                                          #representation
-        return '<Task %r>' % self.id                             #return string when we add a new task, Show the task object as <Task id> instead of a raw memory address.   
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "completed": self.completed,
+            "createdDate": self.date_created.strftime("%b %d"),
+            "date": self.dueDate.isoformat() if self.dueDate else "",
+            "time": self.due_time.strftime("%H:%M") if self.due_time else ""
+        }
 
-# with app.app_context():                                          #create the database
-#     db.create_all()
+# Create tables
+with app.app_context():
+    db.create_all()
     
-@app.route('/', methods=['POST', 'GET'])                                                  # routes points to endpoint/url
-def index():  
-    if request.method == 'POST':                              
-        task_content = request.form['content']                  # unod ka form, name=content
-        new_task = ToDo(content=task_content)                   # create a new task object
-        
-        try:
-            db.session.add(new_task)                            # add the new task to the database session
-            db.session.commit()                                 # commit the changes to the database
-            return redirect('/')                                # redirect to the home page
-        except:
-            return 'There was an issue adding your task'        # error handling
-    else:
-        tasks = ToDo.query.order_by(ToDo.date_created).all()        # retrieve all tasks from the database, ordered by date created
-        return render_template('index.html', tasks=tasks)                         # render_template to render html file, no need to specify templates folder
-    
-    
-@app.route('/delete/<int:id>')                                #accept an int na parang parameter para ma delete ang amo to nga id
-def delete(id):
-        task_to_delete = ToDo.query.get_or_404(id)            # get the task by id or return 404 if not found
-        
-        try:
-            db.session.delete(task_to_delete)                 
-            db.session.commit()                                
-            return redirect('/')                              
-        except:
-            return 'There was a problem deleting that task'    
-        
-        
-@app.route('/update/<int:id>', methods = ['GET', 'POST'])
-def update(id):
-    task = ToDo.query.get_or_404(id)
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-    if request.method == 'POST':
-        task.content = request.form['content']
-        
+# GET all tasks
+@app.route('/api/tasks', methods=['GET'])
+def get_tasks():
+    tasks = Task.query.order_by(Task.date_created.desc()).all()
+    return jsonify([task.to_dict() for task in tasks])
+
+# POST create new task
+@app.route('/api/tasks', methods=['POST'])
+def create_task():
+    data = request.json
+    
+    new_task = Task(
+        name=data.get('name', 'Untitled Task'),
+        completed=data.get('completed', False)
+    )
+    
+    # Handle optional date
+    if data.get('date'):
         try:
-            db.session.commit()
-            return redirect('/')
-        except:
-            return 'There was an issue updating your task'
-    else:
-        return render_template('update.html', task=task)
-                            
-if __name__ == "__main__":
-    app.run(debug=True)
+            new_task.dueDate = datetime.fromisoformat(data['date']).date()
+        except ValueError:
+            pass
+    
+    # Handle optional time
+    if data.get('time'):
+        try:
+            new_task.due_time = datetime.strptime(data['time'], '%H:%M').time()
+        except ValueError:
+            pass
+    
+    db.session.add(new_task)
+    db.session.commit()
+    
+    return jsonify(new_task.to_dict()), 201
+
+# PUT update task
+@app.route('/api/tasks/<int:task_id>', methods=['PUT'])
+def update_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    data = request.json
+    
+    if 'name' in data:
+        task.name = data['name']
+    if 'completed' in data:
+        task.completed = data['completed']
+    
+    # Update date
+    if 'date' in data:
+        if data['date']:
+            try:
+                task.dueDate = datetime.fromisoformat(data['date']).date()
+            except ValueError:
+                task.dueDate = None
+        else:
+            task.dueDate = None
+    
+    # Update time
+    if 'time' in data:
+        if data['time']:
+            try:
+                task.due_time = datetime.strptime(data['time'], '%H:%M').time()
+            except ValueError:
+                task.due_time = None
+        else:
+            task.due_time = None
+    
+    db.session.commit()
+    return jsonify(task.to_dict())
+
+# DELETE task
+@app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
+def delete_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    db.session.delete(task)
+    db.session.commit()
+    return '', 204
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)

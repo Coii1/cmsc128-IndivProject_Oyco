@@ -1,41 +1,71 @@
 {% extends "base.html" %}
 
 {%block head%}
-    <title> Index </title>
+    <title> To-Do </title>
 {% endblock %}
 
 {%block body%}
-<div class="content">
-    <h1 style = "text-align: center"> To-Do List </h1>
-    {%if tasks|length < 1%}         <!-- filter -->
-        <p style="text-align: center"> No tasks yet! Add a task below. </p>
-    {% else %}
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="user-profile">
+                <div class="user-avatar"></div>
+                <div class="username">Username</div>
+            </div>
+            <button class="nav-button active">Tasks</button>
+            <button class="nav-button">Active</button>
+            <button class="nav-button">Completed</button>
+            <button class="nav-button">Calendar</button>
+        </aside>
 
-    <table>
-        <tr>
-            <!--<th> <a href="/login"> Login </a> </th>-->
-            <th> Task </th>
-            <th> Added </th>
-            <th> Actions </th>
-        </tr>
-        {%for task in tasks%}
-            <tr>
-                <td>{{ task.content }}</td>
-                <td>{{ task.date_created.date() }}</td>
-                <td>
-                    <a href="/delete/{{task.id}}">Delete</a> <br>
-                    <a href="/update/{{task.id}}">Update</a>
-                </td>
-            </tr>
-        {%endfor%}
-    </table>
-    {% endif %}
-    <div class="form">
-        <form action = "/" method="POST">
-            <input type="text" name="content" placeholder="Enter task" required>
-            <input type="submit" value="Add Task">
-        </form>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="tasks-header">
+                <div class="tasks-icon"></div>
+                <h1 class="tasks-title">Tasks</h1>
+            </div>
+
+            <div id="taskList">
+                <!-- Tasks will be rendered here -->
+            </div>
+
+            <!-- Add Task Form                    why not use form-->
+            <div class="add-task-form">
+                <div class="task-checkbox" style="visibility: hidden;"></div>
+                <input type="text" class="add-task-input" id="addTaskInput" placeholder="+ Add Task Here">
+            </div>        
+        </main>
+
+        <!-- Task Detail Sidebar -->
+        <aside class="task-detail-sidebar" id="taskDetailSidebar">
+            <div class="detail-header">
+                <button class="close-button" id="closeDetailBtn">×</button>
+            </div>
+            <div class="detail-content">
+                <div class="detail-section">
+                    <input type="text" class="detail-input" id="taskNameInput" placeholder="Task Name"> <!-- add sa js logic nga indi pwede maging empty ang input -->
+                </div>
+
+                <div class="detail-section">
+                    <label class="detail-label">Time</label>
+                    <input type="time" class="detail-input" id="timeInput">
+                </div>
+
+                <div class="detail-section">
+                    <label class="detail-label">Date</label>
+                    <input type="date" class="detail-input" id="taskDateInput">
+                    <div class="date-picker-placeholder">&lt;DatePicker&gt;</div>
+                </div>
+            </div>
+            <div class="detail-footer">
+                <div class="created-info">
+                    <span id="createdDate">Created on Dec 1</span>
+                    <button class="delete-task-btn" id="deleteTaskBtn">🗑️</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Overlay -->
+        <div class="overlay" id="overlay"></div>
     </div>
-        
-</div>
 {% endblock %}
