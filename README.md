@@ -9,3 +9,6 @@ pip3 install virtualenv                     -to install shiz
 virtualenv env                              - creates env dir
 .\env\Scripts\activate.ps1                  - activate venv
 pip3 install flask flask-sqlalchemy         -
+pip install flask-cors
+pip install werkzeug
+

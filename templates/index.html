@@ -2,6 +2,8 @@
 
 {%block head%}
     <title> To-Do </title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">               <!--  JInja2 syntax para ag hold string values -->
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 {% endblock %}
 
 {%block body%}

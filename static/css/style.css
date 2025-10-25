@@ -338,3 +338,179 @@ body {
     opacity: 1;
     pointer-events: all;
 }
+
+
+
+.sign-up-bar {
+    width: 40%;
+    background: #e8e8e8;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Form Containers */
+.signup-container,
+.signin-container {
+    width: 100%;
+}
+
+.form-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Input Groups */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 16px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #f8f8f8;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #888;
+    background: white;
+}
+
+.input-group label {
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 15px;
+    pointer-events: none;
+    transition: all 0.2s;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    color: #666;
+    background: white;
+    padding: 0 5px;
+}
+
+/* Submit Button */
+.btn {
+    width: 100%;
+    padding: 14px 20px;
+    background: #888;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: #666;
+}
+
+.btn:active {
+    background: #555;
+}
+
+/* Recover Password Link */
+.recover {
+    text-align: right;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.recover a {
+    color: #888;
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.recover a:hover {
+    color: #666;
+    text-decoration: underline;
+}
+
+/* Links Section */
+.links {
+    margin-top: 25px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.links p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.links button {
+    padding: 10px 24px;
+    background: transparent;
+    color: #888;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.links button:hover {
+    background: #f8f8f8;
+    border-color: #888;
+    color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sign-up-bar {
+        width: 100%;
+        padding: 30px 20px;
+    }
+}
+
+/* Animation for switching between forms */
+.signup-container,
+.signin-container {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
