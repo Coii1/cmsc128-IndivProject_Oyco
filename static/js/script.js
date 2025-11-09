@@ -224,7 +224,7 @@ deleteTaskBtn.addEventListener('click', () => {
 });
 
 // Initialize app
-fetchTasks();
+//fetchTasks();
 
 //undo
 //prio, sorting

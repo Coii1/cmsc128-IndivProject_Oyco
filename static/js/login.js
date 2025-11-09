@@ -69,7 +69,7 @@ document.getElementById("signInForm").addEventListener("submit", async (e) => {
 
         if (response.ok) {
             console.log("Login success:", result);
-            window.location.href = "/logged";
+            showTodoApp();
         } else {
             console.error("Login failed:", result.message);
         }
@@ -77,3 +77,9 @@ document.getElementById("signInForm").addEventListener("submit", async (e) => {
         //console.error('Error logging in:', error);
     }
 });
+
+function showTodoApp() {
+    document.getElementById("loginContainer").style.display = "none";
+    document.getElementById("todoContainer").style.display = "flex";
+    fetchTasks();  // load tasks after login
+}

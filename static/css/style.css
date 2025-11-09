@@ -17,6 +17,12 @@ body {
     height: 100vh;
 }
 
+#loginContainer, #todoContainer {
+    width: 100%;
+    height: 100vh;
+}
+
+
 /* Sidebar */
 .sidebar {
     width: 220px;
@@ -342,7 +348,8 @@ body {
 
 
 .sign-up-bar {
-    width: 40%;
+    width: 10   0%;
+    height: 100%;
     background: #e8e8e8;
     padding: 20px;
     display: flex;
