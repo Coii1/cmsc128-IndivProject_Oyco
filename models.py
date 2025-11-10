@@ -3,6 +3,11 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
+class UserTask(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), primary_key=True)
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(50), nullable=False)

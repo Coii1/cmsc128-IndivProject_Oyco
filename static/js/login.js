@@ -32,7 +32,8 @@ document.getElementById("signUpForm").addEventListener("submit", async (e) => {
         const response = await fetch("/accounts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
+            credentials: "include"
         });
 
 
@@ -61,7 +62,8 @@ document.getElementById("signInForm").addEventListener("submit", async (e) => {
         const response = await fetch("/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
+            credentials: "include"
         });
 
         const result = await response.json();
@@ -78,8 +80,40 @@ document.getElementById("signInForm").addEventListener("submit", async (e) => {
     }
 });
 
+window.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const res = await fetch("http://127.0.0.1:5000/api/check_session", {
+            credentials: "include"
+        });
+
+        if (res.ok) {
+            const sessionData = await res.json();
+            console.log(res)
+
+
+            // If the session has a user_id, show todo app immediately
+            if (sessionData.user_id) {
+                showTodoApp();
+                console.log(sessionData.user_id)
+                console.log("session exists")
+            } else {
+                document.getElementById("loginContainer").style.display = "block";
+                console.log("login now")
+            }
+        } else {
+            document.getElementById("loginContainer").style.display = "block";
+        }
+    } catch (error) {
+        console.error("Error checking session", error);
+        document.getElementById("loginContainer").style.display = "block";
+    }
+});
+
+
 function showTodoApp() {
     document.getElementById("loginContainer").style.display = "none";
     document.getElementById("todoContainer").style.display = "flex";
     fetchTasks();  // load tasks after login
+    //check_session()
+    
 }

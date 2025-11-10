@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template, session, redirect, url_for
+from flask import Blueprint, request, jsonify, render_template, session, redirect, url_for, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, User
 
@@ -64,11 +64,18 @@ def login():
         return jsonify({"message": "Internal server error"}), 500
         
     
-@auth_bp.route("/logged")
-def logged():
-    if "user_id" not in session:
-        return redirect(url_for("auth.index")) 
-    return render_template("logged.html")
 
    
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
+    session.clear()  # removes all session data
+    print("Session after logout:", dict(session))
     
+    # Create a proper response object
+    response = make_response(jsonify({"message": "Logged out successfully"}))
+    response.status_code = 200
+    
+    # Clear cookies
+    response.set_cookie("session", "", expires=0)
+    response.set_cookie("csrf_token", "", expires=0)
+    return response

@@ -1,5 +1,5 @@
 // API Base URL
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://127.0.0.1:5000/api';
 
 // State
 let tasks = [];
@@ -17,12 +17,33 @@ const taskDateInput = document.getElementById('taskDateInput');
 const deleteTaskBtn = document.getElementById('deleteTaskBtn');
 const createdDate = document.getElementById('createdDate');
 
+async function check_session() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/check_session`,{
+            method: 'GET',
+            credentials: "include"
+        }
+        );
+        if (!response.ok) throw new Error('no session');
+        session = await response.json();
+        console.log(session)
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+        alert('Failed to load tasks. Please refresh the page.');
+    }
+}
+
 // API Functions
 async function fetchTasks() {
     try {
-        const response = await fetch(`${API_BASE_URL}/tasks`);
+        const response = await fetch(`${API_BASE_URL}/tasks`,{
+            method: 'GET',
+            credentials: "include"
+        }
+        );
         if (!response.ok) throw new Error('Failed to fetch tasks');
         tasks = await response.json();
+        console.log(tasks)
         renderTasks();
     } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -35,7 +56,8 @@ async function createTask(taskData) {
         const response = await fetch(`${API_BASE_URL}/tasks`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(taskData)
+            body: JSON.stringify(taskData),
+            credentials: 'include'
         });
         if (!response.ok) throw new Error('Failed to create task');
         const newTask = await response.json();
@@ -53,7 +75,8 @@ async function updateTask(taskId, updates) {
         const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updates)
+            body: JSON.stringify(updates),
+            credentials: "include"
         });
         if (!response.ok) throw new Error('Failed to update task');
         const updatedTask = await response.json();
@@ -74,7 +97,8 @@ async function updateTask(taskId, updates) {
 async function deleteTaskAPI(taskId) {
     try {
         const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: "include"
         });
         if (!response.ok) throw new Error('Failed to delete task');
         
@@ -228,3 +252,23 @@ deleteTaskBtn.addEventListener('click', () => {
 
 //undo
 //prio, sorting
+
+document.getElementById("logoutButton").addEventListener("click", async () => {
+    try {
+        const res = await fetch("/logout", {
+            method: "POST",
+            credentials: "include" // ensures cookies/session are sent
+        });
+
+        if (res.ok) {
+            console.log("Logged out");
+            // Hide the todo app and show login again
+            document.getElementById("todoContainer").style.display = "none";
+            document.getElementById("loginContainer").style.display = "block";
+        } else {
+            console.error("Logout failed");
+        }
+    } catch (error) {
+        console.error("Error logging out:", error);
+    }
+});

@@ -5,12 +5,15 @@ from tasks.routes import tasks_bp
 from models import db
 
 app = Flask(__name__)
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = False  # for testing locally
 app.secret_key = "supersecretkey123"  
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'  # Change to your DB
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+
 db.init_app(app)
-CORS(app)  # Enable CORS for frontend communication
+CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5000", "http://localhost:5000"])  # Enable CORS for frontend communication
 
 # Register blueprints
 app.register_blueprint(auth_bp)

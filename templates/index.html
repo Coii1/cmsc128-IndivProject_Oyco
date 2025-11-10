@@ -9,7 +9,7 @@
 {% endblock %}
 
 {%block body%}
-    <div id="loginContainer">
+    <div id="loginContainer" style="display: none;">
         <aside class="sign-up-bar">
             <div class="user-profile">
                 <button class="user-avatar" onclick="openForm()"></button>
@@ -89,6 +89,7 @@
             <button class="nav-button">Active</button>
             <button class="nav-button">Completed</button>
             <button class="nav-button">Calendar</button>
+            <button id="logoutButton">Logout</button>
         </aside>
 
         <!-- Main Content -->
