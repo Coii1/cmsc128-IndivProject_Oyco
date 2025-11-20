@@ -53,12 +53,14 @@ def login():
         if not check_password_hash(user.password, password):
             return jsonify({"message": f"Incorrect password, The password is {user.password}"}), 401
 
-        # store data in session
+        # store data in session 
         session["user_id"] = user.id
         session["email"] = user.email
         session["first_name"] = user.first_name
         
-        return jsonify({"message": f"Welcome back, {user.first_name}!"}), 200
+        print(user.first_name, "logged in")
+        #ang downside gali sini kay if may error sa return me like indi ma serialize abi, na set nya na before ang sessio so pag nag refresh ka ga gwa na sya
+        return jsonify({"message": f"Welcome back, {user.first_name}!", "username": f'{user.first_name}'}), 200
     except Exception as e:
         print("Login error:", e)
         return jsonify({"message": "Internal server error"}), 500

@@ -49,6 +49,7 @@ document.getElementById("signUpForm").addEventListener("submit", async (e) => {
     }
 });
 
+// ang problem nmn di kay if damo2 tumok ka user ma sulit2 mn sya call
 document.getElementById("signInForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -71,6 +72,8 @@ document.getElementById("signInForm").addEventListener("submit", async (e) => {
 
         if (response.ok) {
             console.log("Login success:", result);
+            console.log("username:", result.username);
+            document.getElementById("username").textContent = result.username;
             showTodoApp();
         } else {
             console.error("Login failed:", result.message);
@@ -95,6 +98,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             if (sessionData.user_id) {
                 showTodoApp();
                 console.log(sessionData.user_id)
+                document.getElementById("username").textContent = result.username;
                 console.log("session exists")
             } else {
                 document.getElementById("loginContainer").style.display = "block";
@@ -111,6 +115,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 
 function showTodoApp() {
+    console.log("showTodoApp function reached")
     document.getElementById("loginContainer").style.display = "none";
     document.getElementById("todoContainer").style.display = "flex";
     fetchTasks();  // load tasks after login
