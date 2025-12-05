@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 db.init_app(app)
-CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5000", "http://localhost:5000"])  # Enable CORS for frontend communication
+CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5000", "http://localhost:5000", "https://coi.pythonanywhere.com"])  # Enable CORS for frontend communication
 
 # Register blueprints
 app.register_blueprint(auth_bp)
