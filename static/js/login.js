@@ -96,9 +96,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 
             // If the session has a user_id, show todo app immediately
             if (sessionData.user_id) {
-                showTodoApp();
+                showTodoApp();  
                 console.log(sessionData.user_id)
-                document.getElementById("username").textContent = result.username;
+                document.getElementById("username").textContent = sessionData.first_name;
                 console.log("session exists")
             } else {
                 document.getElementById("loginContainer").style.display = "block";

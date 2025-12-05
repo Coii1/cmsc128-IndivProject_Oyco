@@ -220,8 +220,25 @@ async function addNewTask() {
     const taskName = addTaskInput.value.trim();
     if (!taskName) return;
 
-    await createTask({ name: taskName });
+    const addTaskTime = document.getElementById('addTaskTime');
+    const addTaskDate = document.getElementById('addTaskDate');
+
+    const taskData = { name: taskName };
+    
+    // Add optional time and date if provided
+    if (addTaskTime.value) {
+        taskData.time = addTaskTime.value;
+    }
+    if (addTaskDate.value) {
+        taskData.date = addTaskDate.value;
+    }
+
+    await createTask(taskData);
+    
+    // Clear all fields
     addTaskInput.value = '';
+    addTaskTime.value = '';
+    addTaskDate.value = '';
 }
 
 // Helper functions

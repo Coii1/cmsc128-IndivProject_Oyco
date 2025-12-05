@@ -103,10 +103,24 @@
                 <!-- Tasks will be rendered here -->
             </div>
 
-            <!-- Add Task Form                    why not use form-->
+            <!-- Add Task Form -->
             <div class="add-task-form">
-                <div class="task-checkbox" style="visibility: hidden;"></div>
-                <input type="text" class="add-task-input" id="addTaskInput" placeholder="+ Add Task Here">
+                <div class="add-task-content">
+                    <div class="add-task-main">
+                        <div class="task-checkbox" style="visibility: hidden;"></div>
+                        <input type="text" class="add-task-input" id="addTaskInput" placeholder="+ Add Task Here">
+                    </div>
+                    <div class="add-task-details">
+                        <div class="add-task-field">
+                            <label for="addTaskTime">Time</label>
+                            <input type="time" class="add-task-time" id="addTaskTime">
+                        </div>
+                        <div class="add-task-field">
+                            <label for="addTaskDate">Date</label>
+                            <input type="date" class="add-task-date" id="addTaskDate">
+                        </div>
+                    </div>
+                </div>
             </div>        
         </main>
 

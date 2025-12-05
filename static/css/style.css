@@ -72,6 +72,22 @@ body {
     background: #b8b8b8;
 }
 
+#logoutButton {
+    padding: 14px 20px;
+    background: #d0d0d0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    text-align: center;
+    transition: background 0.2s;
+    margin-top: auto;
+}
+
+#logoutButton:hover {
+    background: #c0c0c0;
+}
+
 /* Main Content */
 .main-content {
     flex: 1;
@@ -189,9 +205,19 @@ body {
     padding: 16px 20px;
     margin-top: 12px;
     border-radius: 8px;
+}
+
+.add-task-content {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+.add-task-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
 }
 
 .add-task-input {
@@ -205,6 +231,41 @@ body {
 
 .add-task-input::placeholder {
     color: #666;
+}
+
+.add-task-details {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.add-task-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.add-task-field label {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+}
+
+.add-task-time,
+.add-task-date {
+    padding: 6px 10px;
+    border: 1px solid #b8b8b8;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #f8f8f8;
+    color: #333;
+    outline: none;
+}
+
+.add-task-time:focus,
+.add-task-date:focus {
+    border-color: #888;
+    background: white;
 }
 
 /* Task Detail Sidebar */
