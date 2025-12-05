@@ -85,7 +85,7 @@ document.getElementById("signInForm").addEventListener("submit", async (e) => {
 
 window.addEventListener("DOMContentLoaded", async () => {
     try {
-        const res = await fetch("http://127.0.0.1:5000/api/check_session", {
+        const res = await fetch("/api/check_session", {
             credentials: "include"
         });
 

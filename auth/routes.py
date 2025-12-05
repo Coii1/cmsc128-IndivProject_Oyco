@@ -49,9 +49,9 @@ def login():
         if not user:
             return jsonify({"message": "Email not found"}), 404
 
-        # if password is correct
+        # if password is incorrect, do not leak stored password
         if not check_password_hash(user.password, password):
-            return jsonify({"message": f"Incorrect password, The password is {user.password}"}), 401
+            return jsonify({"message": "Incorrect password"}), 401
 
         # store data in session 
         session["user_id"] = user.id

@@ -34,6 +34,8 @@ def get_tasks():
 # POST create new task
 @tasks_bp.route('/tasks', methods=['POST'])
 def create_task():
+    if "user_id" not in session:
+        return jsonify({"error": "Unauthorized"}), 401
     data = request.json
     current_user_id = session["user_id"]
     new_task = Task(
@@ -67,6 +69,8 @@ def create_task():
 # PUT update task
 @tasks_bp.route('/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
+    if "user_id" not in session:
+        return jsonify({"error": "Unauthorized"}), 401
     task = Task.query.get_or_404(task_id)
     data = request.json
     

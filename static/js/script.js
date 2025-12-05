@@ -1,5 +1,5 @@
-// API Base URL
-const API_BASE_URL = 'http://127.0.0.1:5000/api';
+// API Base URL (relative for deployment)
+const API_BASE_URL = '/api';
 
 // State
 let tasks = [];
